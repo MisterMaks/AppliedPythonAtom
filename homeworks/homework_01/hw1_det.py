@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import numpy as np
+
 
 def calculate_determinant(list_of_lists):
     '''
@@ -11,4 +13,10 @@ def calculate_determinant(list_of_lists):
     :param list_of_lists: список списков - исходная матрица
     :return: значение определителя или None
     '''
-    raise NotImplementedError
+
+    try:
+        return np.linalg.det(list_of_lists)
+    except Exception:
+        return None
+
+    # raise NotImplementedError

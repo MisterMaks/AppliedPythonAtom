@@ -9,4 +9,21 @@ def reverse(number):
     :param number: исходное число
     :return: инвертированное число
     '''
-    raise NotImplementedError
+
+    n = str(number)
+    sp = []
+    for i in n:
+        sp.append(i)
+    if sp[0] == "-":
+        sp.pop(0)
+        sp.reverse()
+        n = "".join(sp)
+        n = -int(n)
+        return n
+    else:
+        sp.reverse()
+    n = "".join(sp)
+    n = int(n)
+    return n
+
+    # raise NotImplementedError
