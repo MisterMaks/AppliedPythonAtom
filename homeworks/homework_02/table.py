@@ -14,7 +14,7 @@ if __name__ == '__main__':
 
 
 def proverochka_isfile(file):
-    if os.path.isfile("files/posts-utf8.json") is True:
+    if os.path.isfile(file) is True:
         return True
     else:
         return False

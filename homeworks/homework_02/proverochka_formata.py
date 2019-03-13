@@ -20,10 +20,9 @@ def proverka_csv(file, encode):
                 len_s = len(s)
                 break
             for s in reader:
-                if len(s) == len_s:
-                    return True
-                else:
+                if len(s) != len_s:
                     return False
+            return True
     except Exception:
         return False
 
