@@ -34,11 +34,9 @@ class HashSet(HashMap):
     def intersect(self, another_hashset):
         # TODO метод, возвращающий новый HashSet
         #  элементы - пересечение текущего и другого
-        keys = [key for key in self.keys()]
-        another_keys = [key for key in another_hashset.keys()]
         new_hashset = HashSet()
-        for key in keys:
-            if key in another_keys:
+        for key in self.values():
+            if key in another_hashset.values():
                 new_hashset.put(key)
         return new_hashset
         # raise NotImplementedError
