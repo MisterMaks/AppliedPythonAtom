@@ -8,6 +8,7 @@ app = Flask(__name__)
 def get_descr():
     f = getattr(g, '_descr', None)
     if f is None:
+        print("mlsamlcd")
         f = g._descr = open("tmp.txt", "w")
     return f
 
@@ -21,7 +22,7 @@ def increment():
 
 @app.teardown_appcontext
 def teardown_file(exception):
-    f = getattr(g, '_database', None)
+    f = getattr(g, '_descr', None)
     if f is not None:
         f.close()
 

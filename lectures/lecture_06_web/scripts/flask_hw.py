@@ -7,7 +7,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return "Hello World!"
+    username = request.args.get("username")
+    return "Hello %s" % username
 
 
 # TODO Добавить рутинги /goodbye
