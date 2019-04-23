@@ -29,30 +29,30 @@ class LinearRegression:
             "Размеры X_train и y_train не совпадают! Не надо так!!!"
         self.status = True
         self.weights = np.random.normal(scale=0.001, size=(X_train.shape[1] + 1))
-        extra_weights = copy.deepcopy(self.weights)
+        extra_weights = self.weights
         n = X_train.shape[0]
         X = np.hstack([np.ones((n, 1)), X_train])
         if self.regulatization == "L1":
             for i in range(steps):
                 grad_Q = (2 / n) * (X.T @ (self.predict(X_train) - y_train)) + self.alpha * np.sign(self.weights) / n
-                self.weights -= self.lambda_coef * grad_Q
-                if abs(extra_weights - self.weights).all() <= eps:
+                if abs(extra_weights - (self.weights - self.lambda_coef * grad_Q)).all() <= eps:
                     break
-                extra_weights = copy.deepcopy(self.weights)
+                self.weights -= self.lambda_coef * grad_Q
+                extra_weights = self.weights
         elif self.regulatization == "L2":
             for i in range(steps):
                 grad_Q = (2 / n) * (X.T @ (self.predict(X_train) - y_train)) + 2 * self.alpha * self.weights / n
-                self.weights -= self.lambda_coef * grad_Q
-                if abs(extra_weights - self.weights).all() <= eps:
+                if abs(extra_weights - (self.weights - self.lambda_coef * grad_Q)).all() <= eps:
                     break
-                extra_weights = copy.deepcopy(self.weights)
+                self.weights -= self.lambda_coef * grad_Q
+                extra_weights = self.weights
         elif self.regulatization is None:
             for i in range(steps):
                 grad_Q = (2 / n) * (X.T @ (self.predict(X_train) - y_train))
-                self.weights = self.weights - self.lambda_coef * grad_Q
-                if abs(extra_weights - self.weights).all() <= eps:
+                if abs(extra_weights - (self.weights - self.lambda_coef * grad_Q)).all() <= eps:
                     break
-                extra_weights = copy.deepcopy(self.weights)
+                self.weights -= self.lambda_coef * grad_Q
+                extra_weights = self.weights
         return None
         # pass
 
