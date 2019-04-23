@@ -12,7 +12,8 @@ def logloss(y_true, y_pred):
     :param y_hat: vector of estimated probabilities
     :return: loss
     """
-    pass
+    return - np.mean(y_true * np.log(y_pred) + (1 - y_true) * np.log(1 - y_pred))
+    # pass
 
 
 def accuracy(y_true, y_pred):
@@ -22,7 +23,12 @@ def accuracy(y_true, y_pred):
     :param y_hat: vector of estimated class values
     :return: loss
     """
-    pass
+    TP_TN = 0
+    for i in range(y_pred.size):
+        if y_pred[i] == y_true[i]:
+            TP_TN += 1
+    return TP_TN / y_pred.size
+    # pass
 
 
 def presicion(y_true, y_pred):
@@ -32,7 +38,15 @@ def presicion(y_true, y_pred):
     :param y_hat: vector of estimated class values
     :return: loss
     """
-    pass
+    TP = 0
+    TP_FP = 0
+    for i in range(y_pred.size):
+        if y_pred[i] == y_true[i] and y_pred[i] == 1:
+            TP += 1
+        if y_pred[i] == 1:
+            TP_FP += 1
+    return TP / TP_FP
+    # pass
 
 
 def recall(y_true, y_pred):
@@ -42,7 +56,15 @@ def recall(y_true, y_pred):
     :param y_hat: vector of estimated class values
     :return: loss
     """
-    pass
+    TP = 0
+    TP_FN = 0
+    for i in range(y_pred.size):
+        if y_pred[i] == y_true[i] and y_pred[i] == 1:
+            TP += 1
+        if y_true[i] == 1:
+            TP_FN += 1
+    return TP / TP_FN
+    # pass
 
 
 def roc_auc(y_true, y_pred):
@@ -52,4 +74,29 @@ def roc_auc(y_true, y_pred):
     :param y_hat: vector of estimated probabilities
     :return: loss
     """
-    pass
+    TPR_list = []
+    FPR_list = []
+    y_class_list = []
+    porogs = np.linspace(1, 0, 101)
+    for porog in porogs:
+        for i in range(y_pred.size):
+            if y_pred[i] >= porog:
+                y_class_list.append(1)
+            else:
+                y_class_list.append(0)
+        TPR_list.append(recall(y_true, np.array(y_class_list)))
+        FPR_list.append(fpr(y_true, np.array(y_class_list)))
+        y_class_list = []
+    return np.trapz(TPR_list, FPR_list)
+    # pass
+
+
+def fpr(y_true, y_pred):
+    FP = 0
+    FP_TN = 0
+    for i in range(y_pred.size):
+        if y_pred[i] != y_true[i] and y_pred[i] == 1:
+            FP += 1
+        if y_true[i] == 0:
+            FP_TN += 1
+    return FP / FP_TN
