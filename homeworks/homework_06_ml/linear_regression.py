@@ -31,27 +31,12 @@ class LinearRegression:
         extra_weights = self.weights
         n = X_train.shape[0]
         X = np.hstack([np.ones((n, 1)), X_train])
-        if self.regulatization == "L1":
-            for i in range(steps):
-                grad_Q = (2 / n) * (X.T @ (self.predict(X_train) - y_train)) + self.alpha * np.sign(self.weights) / n
-                if abs(extra_weights - (self.weights - self.lambda_coef * grad_Q)).all() <= eps:
-                    break
-                self.weights -= self.lambda_coef * grad_Q
-                extra_weights = self.weights
-        elif self.regulatization == "L2":
-            for i in range(steps):
-                grad_Q = (2 / n) * (X.T @ (self.predict(X_train) - y_train)) + 2 * self.alpha * self.weights / n
-                if abs(extra_weights - (self.weights - self.lambda_coef * grad_Q)).all() <= eps:
-                    break
-                self.weights -= self.lambda_coef * grad_Q
-                extra_weights = self.weights
-        elif self.regulatization is None:
-            for i in range(steps):
-                grad_Q = (2 / n) * (X.T @ (self.predict(X_train) - y_train))
-                if abs(extra_weights - (self.weights - self.lambda_coef * grad_Q)).all() <= eps:
-                    break
-                self.weights -= self.lambda_coef * grad_Q
-                extra_weights = self.weights
+        for i in range(steps):
+            grad_Q = self.grad(X, X_train, y_train, n)
+            if abs(extra_weights - (self.weights - self.lambda_coef * grad_Q)).all() <= eps:
+                break
+            self.weights -= self.lambda_coef * grad_Q
+            extra_weights = self.weights
         return None
         # pass
 
@@ -76,3 +61,11 @@ class LinearRegression:
             "Модель не обучена! Не надо так!!!"
         return self.weights
         # pass
+
+    def grad(self, X, X_train, y_train, n):
+        grad_Q = (2 / n) * (X.T @ (self.predict(X_train) - y_train))
+        if self.regulatization == "L1":
+            grad_Q += self.alpha * np.sign(self.weights) / n
+        elif self.regulatization == "L2":
+            grad_Q += 2 * self.alpha * self.weights / n
+        return grad_Q
