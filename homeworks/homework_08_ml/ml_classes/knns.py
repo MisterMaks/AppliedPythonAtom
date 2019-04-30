@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import numpy as np
+
 
 class KNNRegressor:
     """
@@ -12,7 +14,8 @@ class KNNRegressor:
         Конструктор
         :param n: число ближайших соседей, которые используются
         '''
-        raise NotImplementedError
+        self.n = n
+        # raise NotImplementedError
 
     def fit(self, X, y):
         '''
@@ -20,7 +23,9 @@ class KNNRegressor:
         :param y: целевая переменная, матрица размерности (num_obj, 1)
         :return: None
         '''
-        raise NotImplementedError
+        self.X = X
+        self.y = y
+        # raise NotImplementedError
 
     def predict(self, X):
         '''
@@ -28,7 +33,7 @@ class KNNRegressor:
         :return: вектор предсказаний, матрица размерности (num_test_obj, 1)
         '''
 
-        raise NotImplementedError
+        # raise NotImplementedError
 
         y = []
         assert len(X.shape) == 2
@@ -36,10 +41,12 @@ class KNNRegressor:
             # Посчитаем расстояние от всех элементов в тренировочной выборке
             # до текущего примера -> результат - вектор размерности трейна
             # TODO d =
+            d = np.sqrt(np.sum((t - self.X) ** 2, axis=1))
             # Возьмем индексы n элементов, расстояние до которых минимально
             # результат -> вектор из n элементов
             # TODO idx =
+            idx = np.argsort(d)[:self.n]
             # TODO
-            prediction = None
+            prediction = np.mean(self.y[idx])
             y.append(prediction)
         return y

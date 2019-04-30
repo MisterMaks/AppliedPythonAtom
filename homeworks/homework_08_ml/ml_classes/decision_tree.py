@@ -17,7 +17,11 @@ class DecisionTreeClassifier:
         :param min_inform_criter: один из критериев останова - процент прироста информации, который
         считаем незначительным
         '''
-        raise NotImplementedError
+        self.max_depth = max_depth
+        self.min_leaf_size = min_leaf_size
+        self.max_leaf_number = max_leaf_number
+        self.min_inform_criter = min_inform_criter
+        # raise NotImplementedError
 
     def compute_split_information(self, X, y, th):
         '''
@@ -27,7 +31,10 @@ class DecisionTreeClassifier:
         :param th: Порог, который проверяется
         :return: прирост информации
         '''
-        raise NotImplementedError
+        y1 = th * self.compute_split_information(y=y[:th])
+        y2 = (len(y) - th) * self.compute_split_information(y=y[th:])
+        return (y1 + y2) / len(y)
+        # raise NotImplementedError
 
     def fit(self, X, y):
         '''
@@ -36,7 +43,8 @@ class DecisionTreeClassifier:
         :param y: матрица целевой переменной (num_objects, 1)
         :return: None
         '''
-        raise NotImplementedError
+        
+        # raise NotImplementedError
 
     def predict(self, X):
         '''
