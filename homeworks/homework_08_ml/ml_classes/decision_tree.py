@@ -43,8 +43,7 @@ class DecisionTreeClassifier:
         :param y: матрица целевой переменной (num_objects, 1)
         :return: None
         '''
-        
-        # raise NotImplementedError
+        raise NotImplementedError
 
     def predict(self, X):
         '''
